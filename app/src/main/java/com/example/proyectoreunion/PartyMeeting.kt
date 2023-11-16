@@ -24,12 +24,14 @@ class PartyMeeting : AppCompatActivity() {
     private lateinit var binding: ActivityPartyMeetingBinding
     private lateinit var db: FirebaseFirestore
     private lateinit var cancionesReproduccion: List<String>
+    var  key: String? = null
+    private lateinit var  idUsuario: String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityPartyMeetingBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        val key = intent.getStringExtra("key")
+        key = intent.getStringExtra("key")
         Toast.makeText(this, " $key", Toast.LENGTH_SHORT).show()
         /*  // Inicializar Firebase
         db = Firebase.firestore
@@ -134,25 +136,16 @@ class PartyMeeting : AppCompatActivity() {
 
         if (usuario != null) {
             val uid = usuario.uid
-            val documentRef = db.collection("partyMeeting").document(uid);
+            val documentRef = db.collection("partyMeeting").whereEqualTo("key", key);
 
             // Realiza una consulta para obtener los datos
-            documentRef.addSnapshotListener  { value, e  ->
+            documentRef.addSnapshotListener   { snapshots, e  ->
                 Log.w(TAG,"firebaseSnapShot Se ejecuto el get ");
-                if (e != null) {
-                    Log.w(TAG, "firebaseSnapShot Error en el get ", e)
-                    return@addSnapshotListener
-                }
-//
-//                val cities = ArrayList<String>()
-//                for (doc in value!!) {
-//                    doc.getString("name")?.let {
-//                        cities.add(it)
-//                    }
-//                }
-//                Log.d(TAG, "Current cites in CA: $cities")
-                if (value  != null ) {
-                    val arrayDatos = value.get("songOrderList") as List<String>;
+
+                if (snapshots != null && !snapshots.isEmpty()) {
+                    val arrayDatos = snapshots.documents[0].get("songOrderList") as List<String>
+                    val obtenerIdUsuario = snapshots.documents[0].id
+                    idUsuario = obtenerIdUsuario
                     cancionesReproduccion = arrayDatos
 
                     if(arrayDatos.size == 0 ){
@@ -166,8 +159,30 @@ class PartyMeeting : AppCompatActivity() {
                     }
 
                     Log.w(TAG,"Se ejecuto el get");
-
                 }
+
+//                if (e != null) {
+//                    Log.w(TAG, "firebaseSnapShot Error en el get ", e)
+//                    return@addSnapshotListener
+//                }
+//
+//                if (value  != null ) {
+//                    val arrayDatos = value.get("songOrderList") as List<String>;
+//                    cancionesReproduccion = arrayDatos
+//
+//                    if(arrayDatos.size == 0 ){
+//                        binding.TextSongs.text = ""
+//                    }
+//                    binding.TextSongs.text = ""
+//                    for (cancion in arrayDatos!!) {
+//
+//                        binding.TextSongs.append("$cancion \n")
+//                        print(cancion)
+//                    }
+//
+//                    Log.w(TAG,"Se ejecuto el get");
+//
+//                }
             }
         }
     }
@@ -182,7 +197,7 @@ class PartyMeeting : AppCompatActivity() {
 
         if (usuario != null) {
             val uid = usuario.uid
-            val documentRef = db.collection("partyMeeting").document(uid);
+            val documentRef = db.collection("partyMeeting").document(idUsuario);
             documentRef.set(mapOf("songOrderList" to nuevaLista), SetOptions.merge())
                 .addOnSuccessListener {
                     // Operación exitosa

@@ -34,6 +34,8 @@ class WelcomeHome : AppCompatActivity() {
             val songs = binding.song1.text.toString().trim()
             if (songs.isNotEmpty()) {
                 listaCanciones.add(songs)
+                    binding.textView5.append("$songs \n")
+
                 Toast.makeText(this,"Cancion agregada",Toast.LENGTH_SHORT).show()
                 binding.song1.text!!.clear()
             } else {
@@ -143,6 +145,7 @@ class WelcomeHome : AppCompatActivity() {
             for ((index, cancion) in canciones.withIndex()) {
                 datosUsuario["cancion${index + 1}"] = cancion
                 cancionesMutable.add(cancion)
+
 
             }
 

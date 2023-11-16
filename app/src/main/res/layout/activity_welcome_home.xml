@@ -10,7 +10,8 @@
         android:id="@+id/relativeParent"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/white">
+        android:background="@color/white"
+        android:visibility="visible">
 
         <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
@@ -24,7 +25,6 @@
                 android:layout_marginTop="35dp"
                 android:orientation="vertical"
                 tools:ignore="UselessParent">
-
 
 
                 <ImageView
@@ -161,6 +161,13 @@
 
 
                 <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
+
+                </LinearLayout>
+
+                <LinearLayout
 
                     android:id="@+id/containerLogo"
                     android:layout_width="match_parent"
@@ -241,9 +248,8 @@
                     android:id="@+id/containerButton"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/containerFullName"
-                    android:layout_marginTop="20dp"
-                    android:layout_marginBottom="15dp"
+                    android:layout_marginTop="600dp"
+                    android:layout_marginBottom="20dp"
                     android:gravity="center">
 
 
@@ -266,6 +272,17 @@
 
 
                 </LinearLayout>
+
+                <TextView
+                    android:id="@+id/textView5"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/containerFullName"
+                    android:layout_marginTop="43dp"
+                    android:textAlignment="center"
+                    android:textColor="@color/black"
+                    android:textSize="24sp"
+                    android:textStyle="bold" />
 
 
             </RelativeLayout>
@@ -331,6 +348,7 @@
                     android:textSize="18sp" />
 
             </com.google.android.material.textfield.TextInputLayout>
+
             <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
                 android:id="@+id/goToMeetParty"
                 style="@style/ButtonExtendSecond"

@@ -19,7 +19,7 @@ class SelectItemSong : AppCompatActivity() {
     private lateinit var db: FirebaseFirestore
 
     private lateinit var cancionesReproduccion: List<String>
-
+    private lateinit var  idUsuario: String
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding=ActivitySelectItemSongBinding.inflate(layoutInflater)
@@ -48,7 +48,7 @@ class SelectItemSong : AppCompatActivity() {
 
                         if (!isFirstSelection) {
                             val itemSeleccionado = parentView.getItemAtPosition(position) as String
-                            Toast.makeText(applicationContext, "Item seleccionado: $itemSeleccionado", Toast.LENGTH_SHORT).show()
+                            Toast.makeText(applicationContext, "Cancion seleccionada: $itemSeleccionado", Toast.LENGTH_SHORT).show()
                             setearArrayEnFirestore(itemSeleccionado);
                             val intent = Intent(applicationContext, PartyMeeting::class.java)
                             intent.putExtra("item", itemSeleccionado)
@@ -78,13 +78,13 @@ class SelectItemSong : AppCompatActivity() {
 
         if (usuario != null) {
             val uid = usuario.uid
-            val documentRef = db.collection("partyMeeting").document(uid);
+
             obtenerArrayDesdeFirebase { datosExistente ->
                 if (datosExistente != null) {
 
                     val listadoCanciones = datosExistente.plusElement(cancionAgregada);
 
-
+                    val documentRef = db.collection("partyMeeting").document(idUsuario);
                     // Actualiza el documento en Firestore con los nuevos datos
                     documentRef.set(mapOf("songOrderList" to listadoCanciones),SetOptions.merge())
                         .addOnSuccessListener {
@@ -117,12 +117,13 @@ class SelectItemSong : AppCompatActivity() {
 
         if (usuario != null) {
             val uid = usuario.uid
-            val documentRef = db.collection("partyMeeting").document(uid);
+            val documentRef = db.collection("partyMeeting").whereEqualTo("key", key);
 
             // Realiza una consulta para obtener los datos
             documentRef.get().addOnSuccessListener { document  ->
-                if (document  != null && document.exists()) {
-                    val arrayDatos = document.get("songOrderList") as List<String>;
+                if (document  != null ) {
+                    idUsuario = document.documents[0].id
+                    val arrayDatos = document.documents[0].get("songOrderList") as List<String>;
                     cancionesReproduccion = arrayDatos;
                     print(arrayDatos);
 

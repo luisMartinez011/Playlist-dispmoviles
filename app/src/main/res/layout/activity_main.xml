@@ -185,16 +185,16 @@
                 </LinearLayout>
 
 
-                <TextView
-                    android:id="@+id/resetPassword"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/containerText"
-                    android:layout_marginTop="25dp"
-                    android:text="@string/resetPassLogin"
-                    android:textAlignment="center"
-                    android:textColor="@color/black"
-                    android:textSize="21sp" />
+<!--                <TextView-->
+<!--                    android:id="@+id/resetPassword"-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:layout_below="@+id/containerText"-->
+<!--                    android:layout_marginTop="25dp"-->
+<!--                    android:text="@string/resetPassLogin"-->
+<!--                    android:textAlignment="center"-->
+<!--                    android:textColor="@color/black"-->
+<!--                    android:textSize="21sp" />-->
 
 
 
