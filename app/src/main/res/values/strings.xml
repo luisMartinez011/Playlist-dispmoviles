@@ -1,0 +1,17 @@
+<resources>
+    <string name="app_name">Proyectoreunion</string>
+    <string name="welcome">¡Bienvenido!</string>
+
+    <string name="login">Iniciar sesión</string>
+    <string name="password">Contraseña</string>
+    <string name="password_confirm">Confirmar contraseña</string>
+    <string name="phone">Telefono</string>
+    <string name="name">Nombre(s)</string>
+    <string name="last_name">Apellidos</string>
+    <string name="email">Correo electronico</string>
+    <string name="email_or_phone">Correo electronico</string>
+    <string name="dont_have_account">¿No tienes cuenta?</string>
+    <string name="create_account">Registrarse aqui</string>
+    <string name="resetPassLogin">Olvide mi contraseña</string>
+
+</resources>

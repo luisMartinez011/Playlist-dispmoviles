@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "885363042884",
+    "project_id": "partymeetproject",
+    "storage_bucket": "partymeetproject.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:885363042884:android:b6b65f271249f66ca36a11",
+        "android_client_info": {
+          "package_name": "com.example.proyectoreunion"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCXk1x6Wq-facckV25RWjv6mPxlYHqw9dU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
