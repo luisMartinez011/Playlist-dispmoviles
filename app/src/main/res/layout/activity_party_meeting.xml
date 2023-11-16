@@ -44,8 +44,11 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintEnd_toEndOf="parent"/>
 
+
+
         <TextView
-            android:id="@+id/TextSongs"
+            android:id="@+id/textKey"
+
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/albumArt"
@@ -57,10 +60,12 @@
             android:layout_marginTop="40dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/albumArt"/>
+            app:layout_constraintTop_toBottomOf="@+id/albumArt"
+
+            />
 
         <TextView
-            android:id="@+id/textKey"
+            android:id="@+id/TextSongs"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/TextSongs"
@@ -72,7 +77,25 @@
             android:layout_marginTop="12dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/TextSongs"/>
+            app:layout_constraintTop_toBottomOf="@+id/textKey"
+            />
+
+<!--        <ListView-->
+<!--            android:id="@+id/TextSongs"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_below="@id/TextSongs"-->
+<!--            android:gravity="center"-->
+<!--            android:text=""-->
+<!--            android:textColor="@color/black"-->
+<!--            android:textSize="26sp"-->
+<!--            android:textStyle="bold"-->
+<!--            android:layout_marginTop="12dp"-->
+<!--            app:layout_constraintStart_toStartOf="parent"-->
+<!--            app:layout_constraintEnd_toEndOf="parent"-->
+<!--            app:layout_constraintTop_toBottomOf="@+id/textKey"-->
+<!--            >-->
+<!--        </ListView>-->
         <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
             android:id="@+id/btnAddSong"
             android:layout_width="0dp"

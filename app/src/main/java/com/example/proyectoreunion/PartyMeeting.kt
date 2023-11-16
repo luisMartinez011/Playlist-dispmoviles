@@ -3,20 +3,28 @@ package com.example.proyectoreunion
 import android.animation.ObjectAnimator
 import android.content.ClipData
 import android.content.ClipboardManager
+import android.content.ContentValues.TAG
 import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.animation.LinearInterpolator
 import android.widget.CheckBox
 import android.widget.LinearLayout
 import android.widget.Toast
 import com.example.proyectoreunion.databinding.ActivityPartyMeetingBinding
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.SetOptions
 import com.makeramen.roundedimageview.RoundedImageView
 
 class PartyMeeting : AppCompatActivity() {
     private var canciones: Array<String>? = null
     private lateinit var binding: ActivityPartyMeetingBinding
+    private lateinit var db: FirebaseFirestore
+    private lateinit var cancionesReproduccion: List<String>
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityPartyMeetingBinding.inflate(layoutInflater)
@@ -53,16 +61,18 @@ class PartyMeeting : AppCompatActivity() {
             // El usuario no está autenticado
         }
     }*/
-        val intent = intent
-        val selectdItemSpinnerSong = mutableListOf<String>()
 
-        val itemSpinner=intent.getStringExtra("item")
-        if (itemSpinner != null) {
-            selectdItemSpinnerSong.add(itemSpinner)
-        }
-        for (cancion in selectdItemSpinnerSong!!) {
-            binding.TextSongs.append("$cancion \n")
-        }
+        val intent = intent
+//        val selectdItemSpinnerSong = mutableListOf<String>()
+
+        //agregar
+//        val itemSpinner=intent.getStringExtra("item")
+//        if (itemSpinner != null) {
+//            selectdItemSpinnerSong.add(itemSpinner)
+//        }
+//        for (cancion in cancionesReproduccion!!) {
+//            binding.TextSongs.append("$cancion \n")
+//        }
         if (intent.hasExtra("songs")) {
             canciones = intent.getStringArrayExtra("songs")
             if (canciones != null) {
@@ -80,7 +90,9 @@ class PartyMeeting : AppCompatActivity() {
 
         rotationAnimator.start()
         //binding.TextSongs.text = "$song1 \n $song3 \n $song4 \n $song5 \n $song6 \n $song7 \n $key"
-        binding.textKey.text=key
+        binding.textKey.text="Codigo: " + key
+
+        getListadoCanciones()
         binding.textKey.setOnClickListener {
             val keyName=binding.textKey.text.toString()
             copyToClipboard(keyName)
@@ -91,6 +103,19 @@ class PartyMeeting : AppCompatActivity() {
             intent.putExtra("songs", canciones)
             startActivity(intent)
         }
+
+        binding.textKey.setOnClickListener {
+            val keyName=binding.textKey.text.toString()
+            copyToClipboard(keyName)
+        }
+
+        binding.albumArt.setOnClickListener{
+
+            val nuevaLista = cancionesReproduccion.subList(1, cancionesReproduccion.size)
+
+           setListadoCanciones(nuevaLista)
+            getListadoCanciones()
+        }
     }
 
     private fun copyToClipboard(text: String) {
@@ -99,6 +124,76 @@ class PartyMeeting : AppCompatActivity() {
         val clipData = ClipData.newPlainText("Texto copiado", text)
         Toast.makeText(this,"Clave copiada $text",Toast.LENGTH_SHORT).show()
         clipboardManager.setPrimaryClip(clipData)
+    }
+
+    private fun getListadoCanciones(){
+        db = FirebaseFirestore.getInstance()
+        val auth = FirebaseAuth.getInstance()
+
+        val usuario = auth.currentUser
+
+        if (usuario != null) {
+            val uid = usuario.uid
+            val documentRef = db.collection("partyMeeting").document(uid);
+
+            // Realiza una consulta para obtener los datos
+            documentRef.addSnapshotListener  { value, e  ->
+                Log.w(TAG,"firebaseSnapShot Se ejecuto el get ");
+                if (e != null) {
+                    Log.w(TAG, "firebaseSnapShot Error en el get ", e)
+                    return@addSnapshotListener
+                }
+//
+//                val cities = ArrayList<String>()
+//                for (doc in value!!) {
+//                    doc.getString("name")?.let {
+//                        cities.add(it)
+//                    }
+//                }
+//                Log.d(TAG, "Current cites in CA: $cities")
+                if (value  != null ) {
+                    val arrayDatos = value.get("songOrderList") as List<String>;
+                    cancionesReproduccion = arrayDatos
+
+                    if(arrayDatos.size == 0 ){
+                        binding.TextSongs.text = ""
+                    }
+                    binding.TextSongs.text = ""
+                    for (cancion in arrayDatos!!) {
+
+                        binding.TextSongs.append("$cancion \n")
+                        print(cancion)
+                    }
+
+                    Log.w(TAG,"Se ejecuto el get");
+
+                }
+            }
+        }
+    }
+
+
+
+    private fun setListadoCanciones(nuevaLista: List<String>) {
+        db = FirebaseFirestore.getInstance()
+        val auth = FirebaseAuth.getInstance()
+
+        val usuario = auth.currentUser
+
+        if (usuario != null) {
+            val uid = usuario.uid
+            val documentRef = db.collection("partyMeeting").document(uid);
+            documentRef.set(mapOf("songOrderList" to nuevaLista), SetOptions.merge())
+                .addOnSuccessListener {
+                    // Operación exitosa
+
+                    Log.w(TAG,"Datos modificados y seteados en Firestore")
+                }
+                .addOnFailureListener {
+                    // Manejar errores
+                    Log.w(TAG,"Error al modificar y setear datos en Firestore: ${it.message}")
+                }
+        }
     }
     /*fun checkBoxSongs(){
         // Obtén la referencia al contenedor de CheckBox en tu diseño

@@ -146,6 +146,8 @@ class WelcomeHome : AppCompatActivity() {
 
             }
 
+            datosUsuario["songOrderList"]= emptyList<String>();
+
             documentRef.set(datosUsuario, SetOptions.merge()).addOnCompleteListener { task ->
                 if (task.isSuccessful) {
                     Toast.makeText(
